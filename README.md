@@ -2,7 +2,7 @@
 
 # Seeding the database
 
-1. Add the seed in `db/seeds.rb`:
+1. Open `db/seeds.rb` and add the following code:
 
 ```ruby
 Post.create([
