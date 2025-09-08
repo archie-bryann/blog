@@ -1,0 +1,12 @@
+<div style = "display:flex; align-items:center;">
+<h4><%= link_to "Home", root_path %></h4>
+<h4 style="margin-left:20px;">
+    <% if current_user %>
+    <h4><%= link_to "My Posts", posts_myposts_path %></h4>
+    <%= button_to "Sign out", destroy_user_session_path, method: "delete" %>
+    <% else %>
+    <%= link_to "Sign up", new_user_registration_path %>
+    <%= link_to "Sign in", new_user_session_path %>
+    <% end %>
+</h4>
+</div>
