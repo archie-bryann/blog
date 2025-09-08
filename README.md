@@ -43,3 +43,33 @@ get 'myposts' as: 'posts/myposts' to: 'posts#myposts'
 - **get** → defines the HTTP method and URL path (e.g. `GET /myposts`)
 - **as** → sets the internal helper name used for linking (e.g. `myposts_path`, `myposts_url`)
 - **to** → points to the controller and action that handle the request (e.g. `posts#myposts`)
+
+# Drop the database
+
+```
+rails db:drop:_unsafe
+```
+
+# Create the database
+
+```
+rails db:create
+```
+
+# Add a username to registration
+
+1. Added field `user_name` to schema.rb via migration
+
+2. Generate devise controllers
+
+Since, we want to be able to enable authentication with `username`:
+
+```
+rails g devise:controllers users
+```
+
+3. Update `config/routes.rb` per instructions from the terminal.
+
+4. Open `controllers/registrations_controller` & edit what sign up params to permit in `configure_signup_params`, of course, after uncommenting the relating `before_action`.
+
+5. Add it in the form.

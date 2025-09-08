@@ -3,7 +3,8 @@
 <h4 style="margin-left:20px;">
     <% if current_user %>
     <h4><%= link_to "My Posts", posts_myposts_path %></h4>
-    <%= button_to "Sign out", destroy_user_session_path, method: "delete" %>
+    <h4><%= link_to "Account", edit_user_registration_path , style: "margin-left: 20px;"  %></h4>
+    <%= button_to "Sign out", destroy_user_session_path, method: "delete", style: "margin-left: 20px;" %>
     <% else %>
     <%= link_to "Sign up", new_user_registration_path %>
     <%= link_to "Sign in", new_user_session_path %>

@@ -21,12 +21,18 @@ class PostsController < ApplicationController
   end
 
   def myposts
-    @posts = Post.where(user_id: current_user.id)
+    if current_user
+      @posts = Post.where(user_id: current_user.id)
+    else
+      redirect_to root_path
+    end
   end
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(post_params) # original
+    # @post.user = current_user # original + method 1
+    # @post = current_user.posts.build(post_params) # method 2
 
     respond_to do |format|
       if @post.save
