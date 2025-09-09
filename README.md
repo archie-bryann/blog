@@ -128,7 +128,7 @@ Searching for a post overwriting the previous value of `@posts`, the default val
 4. Add the following to the model
 
 ```ruby
-    def self.ransackable_attributes(auth_object = nill)
-        ["title"]
-    end
+def self.ransackable_attributes(auth_object = nill)
+    ["title"]
+end
 ```
