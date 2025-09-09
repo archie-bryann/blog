@@ -94,6 +94,8 @@ rails g controller users show
 @user = User.find(params[:id])
 ```
 
+3. Access `@user` in the `show` view.
+
 # Ransack guide
 
 https://activerecord-hackery.github.io/ransack/getting-started/simple-mode/
