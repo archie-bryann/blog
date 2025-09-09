@@ -132,3 +132,173 @@ def self.ransackable_attributes(auth_object = nill)
     ["title"]
 end
 ```
+
+# Setting up postgreSQL
+
+1. Update Linux
+
+```
+sudo apt update
+```
+
+2. Install PostgreSQL
+
+```
+sudo apt install postgresql postgresql-contrib libpq-dev
+```
+
+3. Update `config/database.yml` with below:
+
+```yaml
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: postgres
+  password: Rails.application.credentials.database_password
+  host: localhost
+
+development:
+  <<: *default
+  database: myapp
+
+test:
+  <<: *default
+  database: myapp_test
+
+production:
+  <<: *default
+  database: myapp_production
+```
+
+4. Open the CLI
+
+Run:
+
+```
+export EDITOR=nano
+```
+
+and then run:
+
+```
+rails credentials:edit
+```
+
+5. Add below to the opened `credentials.yml` file, then save and exit:
+
+```yml
+database_password: 12345678
+```
+
+6. Set a password for the `postgres` User
+
+Switch to the `postgres` user (which is the default):
+
+```
+sudo -i -u postgres
+```
+
+Access the PostgreSQL command line:
+
+```
+psql
+```
+
+Set a password for the `postgres` user:
+
+```
+ALTER USER postgres PASSWORD '12345678'
+```
+
+Then exit by running the following:
+
+```
+\q
+```
+
+```
+exit
+```
+
+7. Then drop the db & create a new one
+
+```
+rails db:drop:_unsafe
+```
+
+```
+rails db:create
+```
+
+Ran into errors, where I couldn't login with the default `postgres`, so the workaround is to simply repeat step 6 above, but then run the following command in the PostgresSQL command line:
+
+```
+CREATE USER shayon WITH PASSWORD 'shayon';
+```
+
+```
+ALTER USER shayon WITH SUPERUSER;
+```
+
+Replace with preferred username and password.
+
+Source: https://stackoverflow.com/a/70240100
+
+# Setting up postgreSQL with .env (ChatGPT)
+
+1. Add dotenv support
+
+In your Gemfile (inside the :development, :test group is enough, but you can also make it global):
+
+```
+gem "dotenv-rails"
+```
+
+Then run:
+
+```
+bundle install
+```
+
+2. Create a .env file
+
+```dotenv
+PG_USERNAME=myuser
+PG_PASSWORD=mypassword
+PG_HOST=localhost
+PG_PORT=5432
+PG_DATABASE=myapp_db
+```
+
+3. Your database.yml (already set up from before) will pick these up
+
+```yaml
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("PG_USERNAME") { "myuser" } %>
+  password: <%= ENV.fetch("PG_PASSWORD") { "mypassword" } %>
+  host: <%= ENV.fetch("PG_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("PG_PORT") { 5432 } %>
+  database: <%= ENV.fetch("PG_DATABASE") { "myapp_db" } %>
+
+development:
+  <<: *default
+  database: myapp_development
+
+test:
+  <<: *default
+  database: myapp_test
+
+production:
+  <<: *default
+  database: myapp_production
+```
+
+4. Once that’s set up, you can run:
+
+```
+rails db:create db:migrate
+```
