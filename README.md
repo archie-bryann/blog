@@ -73,3 +73,60 @@ rails g devise:controllers users
 4. Open `controllers/registrations_controller` & edit what sign up params to permit in `configure_signup_params`, of course, after uncommenting the relating `before_action`.
 
 5. Add it in the form.
+
+# Add a unique field to DB
+
+```
+rails g migration AddSlugToPosts slug:uniq
+```
+
+# Create a custom page with functionality
+
+1. Generate a user controller with a method & view
+
+```
+rails g controller users show
+```
+
+2. Add functionality to the show controller
+
+```ruby
+@user = User.find(params[:id])
+```
+
+# Ransack guide
+
+https://activerecord-hackery.github.io/ransack/getting-started/simple-mode/
+
+1. Install the gem
+
+2. Add below to controller index
+
+```ruby
+@q = Post.ransack(params[:q])
+@posts = @q.result(distinct: true)
+```
+
+Searching for a post overwriting the previous value of `@posts`, the default value being all posts.
+
+3. Add below to the `.html.erb` file
+
+```erb
+<%= search_form_for @q, url: posts_path, method: :get do |f| %>
+  <div>
+    <%= f.label :title_cont, "Search by Title" %>
+    <%= f.search_field :title_cont, placeholder: "Enter title" %>
+  </div>
+  <div>
+    <%= f.submit "Search" %>
+  </div>
+<% end %>
+```
+
+4. Add the following to the model
+
+```ruby
+    def self.ransackable_attributes(auth_object = nill)
+        ["title"]
+    end
+```

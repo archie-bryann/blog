@@ -1,6 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
+
 <% content_for :title, "Posts" %>
+
+<%= search_form_for @q, url: posts_path, method: :get do |f| %>
+  <div>
+    <%= f.label :title_cont, "Search by Title" %>
+    <%= f.search_field :title_cont, placeholder: "Enter title" %>
+  </div>
+  <div>
+    <%= f.submit "Search" %>
+  </div>
+<% end %>
 
 <h1>Posts</h1>
 <div id="posts">

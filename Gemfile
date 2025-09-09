@@ -17,6 +17,8 @@ gem "thruster", require: false
 
 # Custom Gems
 gem 'devise', '~> 4.9', '>= 4.9.4'
+gem 'friendly_id', '~> 5.5.0'
+gem 'ransack'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
